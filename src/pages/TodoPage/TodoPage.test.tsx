@@ -68,6 +68,7 @@ describe('TodoPage', () => {
 
     expect(within(todoList()).queryByText('Buy milk')).not.toBeInTheDocument()
     expect(within(todoList()).getByText('Walk dog')).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: 'New todo' })).toHaveFocus()
   })
 
   it('edits a todo and saves on Enter', async () => {
@@ -159,6 +160,7 @@ describe('TodoPage', () => {
     expect(within(todoList()).queryByText('Walk dog')).not.toBeInTheDocument()
     expect(within(todoList()).getByText('Buy milk')).toBeInTheDocument()
     expect(clearButton).toBeDisabled()
+    expect(screen.getByRole('textbox', { name: 'New todo' })).toHaveFocus()
   })
 
   it('keeps todos and the selected filter after a page refresh', async () => {

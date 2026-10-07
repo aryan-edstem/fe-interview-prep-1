@@ -1,10 +1,11 @@
-import { useState, type SubmitEvent } from 'react'
+import { useState, type Ref, type SubmitEvent } from 'react'
 
 interface TodoFormProps {
   onAdd: (title: string) => void
+  ref?: Ref<HTMLInputElement>
 }
 
-export function TodoForm({ onAdd }: TodoFormProps) {
+export function TodoForm({ onAdd, ref }: TodoFormProps) {
   const [title, setTitle] = useState('')
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
@@ -19,6 +20,7 @@ export function TodoForm({ onAdd }: TodoFormProps) {
         New todo
       </label>
       <input
+        ref={ref}
         id="new-todo"
         className="todo-form__input"
         placeholder="What needs to be done?"

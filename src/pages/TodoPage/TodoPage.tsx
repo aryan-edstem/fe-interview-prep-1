@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useLocalStorageState } from '@/hooks/useLocalStorageState'
 import { TodoFilters } from '@/pages/TodoPage/TodoFilters'
 import { TodoForm } from '@/pages/TodoPage/TodoForm'
@@ -25,11 +26,19 @@ export default function TodoPage() {
   const visibleTodos = filterTodos(todos, filter)
   const activeCount = todos.filter((todo) => !todo.completed).length
   const hasCompleted = activeCount < todos.length
+  const newTodoRef = useRef<HTMLInputElement>(null)
+
+  // Removing todos unmounts the focused control; send keyboard users back to the input.
+  function removeTodos(update: (current: Todo[]) => Todo[]) {
+    setTodos(update)
+    newTodoRef.current?.focus()
+  }
 
   return (
     <main className="todo-page">
       <h1>Todos</h1>
       <TodoForm
+        ref={newTodoRef}
         onAdd={(title) => {
           setTodos((current) => addTodo(current, title))
         }}
@@ -47,7 +56,7 @@ export default function TodoPage() {
               type="button"
               disabled={!hasCompleted}
               onClick={() => {
-                setTodos(clearCompleted)
+                removeTodos(clearCompleted)
               }}
             >
               Clear completed
@@ -68,7 +77,7 @@ export default function TodoPage() {
                     setTodos((current) => renameTodo(current, id, title))
                   }}
                   onDelete={(id) => {
-                    setTodos((current) => deleteTodo(current, id))
+                    removeTodos((current) => deleteTodo(current, id))
                   }}
                 />
               ))}
