@@ -1,3 +1,5 @@
+import { createId } from '@/lib/id'
+
 export interface Todo {
   id: string
   title: string
@@ -28,7 +30,7 @@ export function isTodoList(value: unknown): value is Todo[] {
 export function addTodo(todos: Todo[], title: string): Todo[] {
   const trimmed = title.trim()
   if (!trimmed) return todos
-  return [...todos, { id: crypto.randomUUID(), title: trimmed, completed: false }]
+  return [...todos, { id: createId(), title: trimmed, completed: false }]
 }
 
 export function renameTodo(todos: Todo[], id: string, title: string): Todo[] {
