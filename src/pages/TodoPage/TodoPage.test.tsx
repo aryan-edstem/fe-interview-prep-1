@@ -106,13 +106,38 @@ describe('TodoPage', () => {
     expect(within(todoList()).getByText('Buy milk')).toBeInTheDocument()
   })
 
-  it('keeps todos after a page refresh', async () => {
+  it('filters by All, Active and Completed', async () => {
+    const { user } = setup()
+    await addTodos(user, 'Buy milk', 'Walk dog')
+    await user.click(screen.getByRole('checkbox', { name: 'Walk dog' }))
+
+    await user.click(screen.getByRole('button', { name: 'Active' }))
+    expect(screen.getByRole('button', { name: 'Active' })).toHaveAttribute('aria-pressed', 'true')
+    expect(within(todoList()).getByText('Buy milk')).toBeInTheDocument()
+    expect(within(todoList()).queryByText('Walk dog')).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Completed' }))
+    expect(within(todoList()).queryByText('Buy milk')).not.toBeInTheDocument()
+    expect(within(todoList()).getByText('Walk dog')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'All' }))
+    expect(within(todoList()).getAllByRole('listitem')).toHaveLength(2)
+  })
+
+  it('keeps todos and the selected filter after a page refresh', async () => {
     const { user, unmount } = setup()
-    await addTodos(user, 'Buy milk')
+    await addTodos(user, 'Buy milk', 'Walk dog')
+    await user.click(screen.getByRole('checkbox', { name: 'Walk dog' }))
+    await user.click(screen.getByRole('button', { name: 'Completed' }))
     unmount()
 
     render(<TodoPage />)
 
-    expect(within(todoList()).getByText('Buy milk')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Completed' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(within(todoList()).getByText('Walk dog')).toBeInTheDocument()
+    expect(within(todoList()).queryByText('Buy milk')).not.toBeInTheDocument()
   })
 })

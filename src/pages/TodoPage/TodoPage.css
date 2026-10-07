@@ -59,6 +59,17 @@
   text-decoration: line-through;
 }
 
+.todo-filters {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 1rem;
+}
+
+.todo-filters__button[aria-pressed='true'] {
+  font-weight: 600;
+  outline: 1px solid currentColor;
+}
+
 .todo-page__empty {
   color: #59636e;
 }
