@@ -1,11 +1,20 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it } from 'vitest'
+import { MemoryRouter } from 'react-router'
 import TodoPage from '@/pages/TodoPage/TodoPage'
+
+function renderPage() {
+  return render(
+    <MemoryRouter>
+      <TodoPage />
+    </MemoryRouter>,
+  )
+}
 
 function setup() {
   const user = userEvent.setup()
-  const view = render(<TodoPage />)
+  const view = renderPage()
   return { user, ...view }
 }
 
@@ -170,7 +179,7 @@ describe('TodoPage', () => {
     await user.click(screen.getByRole('button', { name: 'Completed' }))
     unmount()
 
-    render(<TodoPage />)
+    renderPage()
 
     expect(screen.getByRole('button', { name: 'Completed' })).toHaveAttribute(
       'aria-pressed',

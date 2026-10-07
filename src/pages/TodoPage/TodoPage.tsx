@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Link } from 'react-router'
 import { useLocalStorageState } from '@/hooks/useLocalStorageState'
 import { TodoFilters } from '@/pages/TodoPage/TodoFilters'
 import { TodoForm } from '@/pages/TodoPage/TodoForm'
@@ -36,55 +37,63 @@ export default function TodoPage() {
 
   return (
     <main className="todo-page">
-      <h1>Todos</h1>
-      <TodoForm
-        ref={newTodoRef}
-        onAdd={(title) => {
-          setTodos((current) => addTodo(current, title))
-        }}
-      />
-      {todos.length === 0 ? (
-        <p className="todo-page__empty">Nothing to do yet. Add your first todo above.</p>
-      ) : (
-        <>
-          <footer className="todo-footer">
-            <p className="todo-footer__count" aria-live="polite">
-              {activeCount} {activeCount === 1 ? 'item' : 'items'} left
-            </p>
-            <TodoFilters value={filter} onChange={setFilter} />
-            <button
-              type="button"
-              disabled={!hasCompleted}
-              onClick={() => {
-                removeTodos(clearCompleted)
-              }}
-            >
-              Clear completed
-            </button>
-          </footer>
-          {visibleTodos.length === 0 ? (
-            <p className="todo-page__empty">No {filter} todos.</p>
-          ) : (
-            <ul className="todo-list" aria-label="Todos">
-              {visibleTodos.map((todo) => (
-                <TodoItem
-                  key={todo.id}
-                  todo={todo}
-                  onToggle={(id) => {
-                    setTodos((current) => toggleTodo(current, id))
-                  }}
-                  onRename={(id, title) => {
-                    setTodos((current) => renameTodo(current, id, title))
-                  }}
-                  onDelete={(id) => {
-                    removeTodos((current) => deleteTodo(current, id))
-                  }}
-                />
-              ))}
-            </ul>
-          )}
-        </>
-      )}
+      <Link to="/" className="todo-page__back">
+        ← All questions
+      </Link>
+      <header className="todo-page__header">
+        <h1 className="todo-page__title">Todos</h1>
+      </header>
+      <div className="todo-card">
+        <TodoForm
+          ref={newTodoRef}
+          onAdd={(title) => {
+            setTodos((current) => addTodo(current, title))
+          }}
+        />
+        {todos.length === 0 ? (
+          <p className="todo-card__empty">Nothing to do yet. Add your first todo above.</p>
+        ) : (
+          <>
+            {visibleTodos.length === 0 ? (
+              <p className="todo-card__empty">No {filter} todos.</p>
+            ) : (
+              <ul className="todo-list" aria-label="Todos">
+                {visibleTodos.map((todo) => (
+                  <TodoItem
+                    key={todo.id}
+                    todo={todo}
+                    onToggle={(id) => {
+                      setTodos((current) => toggleTodo(current, id))
+                    }}
+                    onRename={(id, title) => {
+                      setTodos((current) => renameTodo(current, id, title))
+                    }}
+                    onDelete={(id) => {
+                      removeTodos((current) => deleteTodo(current, id))
+                    }}
+                  />
+                ))}
+              </ul>
+            )}
+            <footer className="todo-footer">
+              <p className="todo-footer__count" aria-live="polite">
+                {activeCount} {activeCount === 1 ? 'item' : 'items'} left
+              </p>
+              <TodoFilters value={filter} onChange={setFilter} />
+              <button
+                type="button"
+                className="todo-footer__clear"
+                disabled={!hasCompleted}
+                onClick={() => {
+                  removeTodos(clearCompleted)
+                }}
+              >
+                Clear completed
+              </button>
+            </footer>
+          </>
+        )}
+      </div>
     </main>
   )
 }
