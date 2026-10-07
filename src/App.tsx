@@ -1,7 +1,9 @@
+import { Route, Routes } from 'react-router'
+
 export function App() {
   return (
-    <main>
-      <h1>FE Interview Prep</h1>
-    </main>
+    <Routes>
+      <Route index element={<h1>FE Interview Prep</h1>} />
+    </Routes>
   )
 }
