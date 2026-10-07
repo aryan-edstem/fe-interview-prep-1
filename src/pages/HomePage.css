@@ -23,11 +23,6 @@
   line-height: 1.15;
 }
 
-.home__subtitle {
-  margin: 0;
-  color: var(--color-muted);
-}
-
 .home__list {
   display: grid;
   gap: 1rem;

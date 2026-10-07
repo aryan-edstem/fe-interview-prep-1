@@ -15,7 +15,6 @@ export default function HomePage() {
       <header className="home__header">
         <p className="home__eyebrow">React + TypeScript</p>
         <h1 className="home__title">FE Interview Prep</h1>
-        <p className="home__subtitle">Frontend exercises, one question per page.</p>
       </header>
       <ol className="home__list">
         {QUESTIONS.map((question, index) => (
