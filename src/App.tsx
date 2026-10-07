@@ -1,9 +1,16 @@
+import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router'
+
+const HomePage = lazy(() => import('@/pages/HomePage'))
+const TodoPage = lazy(() => import('@/pages/TodoPage/TodoPage'))
 
 export function App() {
   return (
-    <Routes>
-      <Route index element={<h1>FE Interview Prep</h1>} />
-    </Routes>
+    <Suspense fallback={<p role="status">Loading…</p>}>
+      <Routes>
+        <Route index element={<HomePage />} />
+        <Route path="q1-todo" element={<TodoPage />} />
+      </Routes>
+    </Suspense>
   )
 }

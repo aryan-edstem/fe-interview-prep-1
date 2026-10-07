@@ -1,0 +1,240 @@
+.todo-page {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 4rem;
+}
+
+.todo-page button {
+  padding: 0.375rem 0.75rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
+.todo-page button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.todo-page__back {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--color-muted);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+
+.todo-page__back:hover {
+  color: var(--color-primary);
+}
+
+.todo-page__header {
+  margin-bottom: 1.5rem;
+}
+
+.todo-page__title {
+  margin: 0;
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+.todo-card {
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.todo-card__empty {
+  margin: 0;
+  padding: 2.5rem 1.5rem;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* Form */
+
+.todo-form {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.todo-form__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.625rem 0.875rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.todo-form__input:focus-visible {
+  border-color: var(--color-primary);
+}
+
+.todo-page .todo-form button {
+  padding: 0.625rem 1.25rem;
+  font-weight: 600;
+  color: var(--color-on-primary);
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+}
+
+.todo-page .todo-form button:hover {
+  background: var(--color-primary-hover);
+}
+
+/* List */
+
+.todo-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.todo-item:hover {
+  background: var(--color-bg);
+}
+
+.todo-item__label {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.todo-item__label input {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.todo-item__title {
+  overflow-wrap: anywhere;
+  transition: color 120ms ease;
+}
+
+.todo-item--completed .todo-item__title {
+  color: var(--color-muted);
+  text-decoration: line-through;
+}
+
+.todo-page .todo-item button {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+.todo-page .todo-item button:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.todo-page .todo-item button:last-child:hover {
+  color: var(--color-danger);
+  background: var(--color-danger-soft);
+}
+
+.todo-item__edit {
+  display: flex;
+  flex: 1;
+}
+
+.todo-item__input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+/* Footer */
+
+.todo-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+.todo-footer__count {
+  margin: 0;
+}
+
+.todo-filters {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+}
+
+.todo-page .todo-filters__button {
+  padding: 0.25rem 0.75rem;
+  color: var(--color-muted);
+}
+
+.todo-page .todo-filters__button:hover {
+  color: var(--color-text);
+}
+
+.todo-page .todo-filters__button[aria-pressed='true'] {
+  font-weight: 600;
+  color: var(--color-primary);
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px rgb(31 35 40 / 12%);
+}
+
+.todo-page .todo-footer__clear {
+  color: var(--color-muted);
+}
+
+.todo-page .todo-footer__clear:not(:disabled):hover {
+  color: var(--color-danger);
+  background: var(--color-danger-soft);
+}
+
+@media (max-width: 30rem) {
+  .todo-footer {
+    justify-content: center;
+  }
+
+  .todo-filters {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .todo-page button,
+  .todo-item__title {
+    transition: none;
+  }
+}
