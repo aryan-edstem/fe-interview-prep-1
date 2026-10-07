@@ -45,6 +45,15 @@
   gap: 0.5rem;
 }
 
+.todo-item__edit {
+  display: flex;
+  flex: 1;
+}
+
+.todo-item__input {
+  flex: 1;
+}
+
 .todo-item--completed .todo-item__title {
   color: #59636e;
   text-decoration: line-through;

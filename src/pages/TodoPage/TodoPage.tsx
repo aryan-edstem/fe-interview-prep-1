@@ -1,7 +1,14 @@
 import { useLocalStorageState } from '@/hooks/useLocalStorageState'
 import { TodoForm } from '@/pages/TodoPage/TodoForm'
 import { TodoItem } from '@/pages/TodoPage/TodoItem'
-import { addTodo, deleteTodo, isTodoList, toggleTodo, type Todo } from '@/pages/TodoPage/todos'
+import {
+  addTodo,
+  deleteTodo,
+  isTodoList,
+  renameTodo,
+  toggleTodo,
+  type Todo,
+} from '@/pages/TodoPage/todos'
 import './TodoPage.css'
 
 const NO_TODOS: Todo[] = []
@@ -27,6 +34,9 @@ export default function TodoPage() {
               todo={todo}
               onToggle={(id) => {
                 setTodos((current) => toggleTodo(current, id))
+              }}
+              onRename={(id, title) => {
+                setTodos((current) => renameTodo(current, id, title))
               }}
               onDelete={(id) => {
                 setTodos((current) => deleteTodo(current, id))

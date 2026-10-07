@@ -70,6 +70,42 @@ describe('TodoPage', () => {
     expect(within(todoList()).getByText('Walk dog')).toBeInTheDocument()
   })
 
+  it('edits a todo and saves on Enter', async () => {
+    const { user } = setup()
+    await addTodos(user, 'Buy milk')
+
+    await user.click(screen.getByRole('button', { name: 'Edit "Buy milk"' }))
+    const input = screen.getByRole('textbox', { name: 'Edit "Buy milk"' })
+    expect(input).toHaveFocus()
+    await user.clear(input)
+    await user.type(input, 'Buy oat milk{Enter}')
+
+    expect(within(todoList()).getByText('Buy oat milk')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Edit "Buy oat milk"' })).toHaveFocus()
+  })
+
+  it('cancels an edit on Escape', async () => {
+    const { user } = setup()
+    await addTodos(user, 'Buy milk')
+
+    await user.click(screen.getByRole('button', { name: 'Edit "Buy milk"' }))
+    await user.type(screen.getByRole('textbox', { name: 'Edit "Buy milk"' }), ' and eggs{Escape}')
+
+    expect(within(todoList()).getByText('Buy milk')).toBeInTheDocument()
+  })
+
+  it('keeps the original title when an edit is left blank', async () => {
+    const { user } = setup()
+    await addTodos(user, 'Buy milk')
+
+    await user.click(screen.getByRole('button', { name: 'Edit "Buy milk"' }))
+    const input = screen.getByRole('textbox', { name: 'Edit "Buy milk"' })
+    await user.clear(input)
+    await user.type(input, '   {Enter}')
+
+    expect(within(todoList()).getByText('Buy milk')).toBeInTheDocument()
+  })
+
   it('keeps todos after a page refresh', async () => {
     const { user, unmount } = setup()
     await addTodos(user, 'Buy milk')
