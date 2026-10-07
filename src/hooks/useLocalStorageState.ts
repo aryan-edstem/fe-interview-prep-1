@@ -4,6 +4,7 @@ import { readStorage, writeStorage, type Guard } from '@/lib/storage'
 /**
  * `useState` that is saved to localStorage under `key` and restored on load.
  * `isValid` rejects stored data of the wrong shape, falling back to `initialValue`.
+ * `key` is read once on mount; remount the component (e.g. via a React `key`) to switch keys.
  * Pass a stable (module-level) `initialValue` and guard so the cross-tab listener is not
  * re-attached every render.
  */
@@ -20,7 +21,11 @@ export function useLocalStorageState<T>(
 
   useEffect(() => {
     function handleStorage(event: StorageEvent) {
-      if (event.key === key) setValue(readStorage(key, initialValue, isValid))
+      if (event.storageArea !== window.localStorage) return
+      // A null key means another tab called localStorage.clear().
+      if (event.key === null || event.key === key) {
+        setValue(readStorage(key, initialValue, isValid))
+      }
     }
     window.addEventListener('storage', handleStorage)
     return () => {

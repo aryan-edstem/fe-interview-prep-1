@@ -32,9 +32,34 @@ describe('useLocalStorageState', () => {
 
     act(() => {
       localStorage.setItem('name', '"grace"')
-      window.dispatchEvent(new StorageEvent('storage', { key: 'name' }))
+      window.dispatchEvent(new StorageEvent('storage', { key: 'name', storageArea: localStorage }))
     })
 
     expect(result.current[0]).toBe('grace')
+  })
+
+  it('falls back to the initial value when another tab clears storage', () => {
+    localStorage.setItem('name', '"ada"')
+    const { result } = renderHook(() => useLocalStorageState('name', 'guest', isString))
+
+    act(() => {
+      localStorage.clear()
+      window.dispatchEvent(new StorageEvent('storage', { key: null, storageArea: localStorage }))
+    })
+
+    expect(result.current[0]).toBe('guest')
+  })
+
+  it('ignores sessionStorage events', () => {
+    const { result } = renderHook(() => useLocalStorageState('name', 'guest', isString))
+
+    act(() => {
+      localStorage.setItem('name', '"grace"')
+      window.dispatchEvent(
+        new StorageEvent('storage', { key: 'name', storageArea: sessionStorage }),
+      )
+    })
+
+    expect(result.current[0]).toBe('guest')
   })
 })
