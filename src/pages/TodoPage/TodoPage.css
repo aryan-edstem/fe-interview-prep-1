@@ -59,10 +59,22 @@
   text-decoration: line-through;
 }
 
+.todo-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.todo-footer__count {
+  margin: 0;
+}
+
 .todo-filters {
   display: flex;
   gap: 0.25rem;
-  margin-top: 1rem;
 }
 
 .todo-filters__button[aria-pressed='true'] {

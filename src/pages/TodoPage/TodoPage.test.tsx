@@ -124,6 +124,32 @@ describe('TodoPage', () => {
     expect(within(todoList()).getAllByRole('listitem')).toHaveLength(2)
   })
 
+  it('shows how many items are left', async () => {
+    const { user } = setup()
+    await addTodos(user, 'Buy milk')
+    expect(screen.getByText('1 item left')).toBeInTheDocument()
+
+    await addTodos(user, 'Walk dog')
+    expect(screen.getByText('2 items left')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('checkbox', { name: 'Buy milk' }))
+    expect(screen.getByText('1 item left')).toBeInTheDocument()
+  })
+
+  it('clears completed todos', async () => {
+    const { user } = setup()
+    await addTodos(user, 'Buy milk', 'Walk dog')
+    const clearButton = screen.getByRole('button', { name: 'Clear completed' })
+    expect(clearButton).toBeDisabled()
+
+    await user.click(screen.getByRole('checkbox', { name: 'Walk dog' }))
+    await user.click(clearButton)
+
+    expect(within(todoList()).queryByText('Walk dog')).not.toBeInTheDocument()
+    expect(within(todoList()).getByText('Buy milk')).toBeInTheDocument()
+    expect(clearButton).toBeDisabled()
+  })
+
   it('keeps todos and the selected filter after a page refresh', async () => {
     const { user, unmount } = setup()
     await addTodos(user, 'Buy milk', 'Walk dog')
