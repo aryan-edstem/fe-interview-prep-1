@@ -84,6 +84,17 @@ describe('TodoPage', () => {
     expect(screen.getByRole('button', { name: 'Edit "Buy oat milk"' })).toHaveFocus()
   })
 
+  it('saves an edit when the input loses focus', async () => {
+    const { user } = setup()
+    await addTodos(user, 'Buy milk')
+
+    await user.click(screen.getByRole('button', { name: 'Edit "Buy milk"' }))
+    await user.type(screen.getByRole('textbox', { name: 'Edit "Buy milk"' }), ' and eggs')
+    await user.click(screen.getByRole('heading', { name: 'Todos' }))
+
+    expect(within(todoList()).getByText('Buy milk and eggs')).toBeInTheDocument()
+  })
+
   it('cancels an edit on Escape', async () => {
     const { user } = setup()
     await addTodos(user, 'Buy milk')

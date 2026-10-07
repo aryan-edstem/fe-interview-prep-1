@@ -14,6 +14,8 @@ export function TodoItem({ todo, onToggle, onRename, onDelete }: TodoItemProps) 
   const inputRef = useRef<HTMLInputElement>(null)
   const editButtonRef = useRef<HTMLButtonElement>(null)
   const restoreFocus = useRef(false)
+  // Set once Enter/Escape ends the edit, so the trailing blur from unmounting the input is ignored.
+  const editFinished = useRef(false)
 
   useEffect(() => {
     if (isEditing) {
@@ -25,11 +27,14 @@ export function TodoItem({ todo, onToggle, onRename, onDelete }: TodoItemProps) 
   }, [isEditing])
 
   function startEditing() {
+    editFinished.current = false
     setDraft(todo.title)
     setIsEditing(true)
   }
 
   function save() {
+    if (editFinished.current) return
+    editFinished.current = true
     onRename(todo.id, draft)
     setIsEditing(false)
   }
@@ -42,8 +47,8 @@ export function TodoItem({ todo, onToggle, onRename, onDelete }: TodoItemProps) 
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key !== 'Escape') return
+    editFinished.current = true
     restoreFocus.current = true
-    setDraft(todo.title)
     setIsEditing(false)
   }
 
