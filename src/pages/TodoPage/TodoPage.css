@@ -30,6 +30,26 @@
   list-style: none;
 }
 
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.todo-item__label {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.todo-item--completed .todo-item__title {
+  color: #59636e;
+  text-decoration: line-through;
+}
+
 .todo-page__empty {
   color: #59636e;
 }

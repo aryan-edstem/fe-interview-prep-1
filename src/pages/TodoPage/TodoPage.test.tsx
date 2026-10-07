@@ -48,6 +48,28 @@ describe('TodoPage', () => {
     expect(screen.queryByRole('list', { name: 'Todos' })).not.toBeInTheDocument()
   })
 
+  it('marks a todo complete and back to active', async () => {
+    const { user } = setup()
+    await addTodos(user, 'Buy milk')
+    const checkbox = screen.getByRole('checkbox', { name: 'Buy milk' })
+
+    await user.click(checkbox)
+    expect(checkbox).toBeChecked()
+
+    await user.click(checkbox)
+    expect(checkbox).not.toBeChecked()
+  })
+
+  it('deletes a todo', async () => {
+    const { user } = setup()
+    await addTodos(user, 'Buy milk', 'Walk dog')
+
+    await user.click(screen.getByRole('button', { name: 'Delete "Buy milk"' }))
+
+    expect(within(todoList()).queryByText('Buy milk')).not.toBeInTheDocument()
+    expect(within(todoList()).getByText('Walk dog')).toBeInTheDocument()
+  })
+
   it('keeps todos after a page refresh', async () => {
     const { user, unmount } = setup()
     await addTodos(user, 'Buy milk')

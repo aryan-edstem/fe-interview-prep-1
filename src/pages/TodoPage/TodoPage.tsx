@@ -1,6 +1,7 @@
 import { useLocalStorageState } from '@/hooks/useLocalStorageState'
 import { TodoForm } from '@/pages/TodoPage/TodoForm'
-import { addTodo, isTodoList, type Todo } from '@/pages/TodoPage/todos'
+import { TodoItem } from '@/pages/TodoPage/TodoItem'
+import { addTodo, deleteTodo, isTodoList, toggleTodo, type Todo } from '@/pages/TodoPage/todos'
 import './TodoPage.css'
 
 const NO_TODOS: Todo[] = []
@@ -21,9 +22,16 @@ export default function TodoPage() {
       ) : (
         <ul className="todo-list" aria-label="Todos">
           {todos.map((todo) => (
-            <li key={todo.id} className="todo-item">
-              {todo.title}
-            </li>
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onToggle={(id) => {
+                setTodos((current) => toggleTodo(current, id))
+              }}
+              onDelete={(id) => {
+                setTodos((current) => deleteTodo(current, id))
+              }}
+            />
           ))}
         </ul>
       )}
